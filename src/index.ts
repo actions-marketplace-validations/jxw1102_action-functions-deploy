@@ -34,7 +34,6 @@ const googleApplicationCredentials = getInput("firebaseServiceAccount", {
   required: true,
 });
 const entryPoint = getInput("entryPoint");
-const target = getInput("target");
 const firebaseToolsVersion = getInput("firebaseToolsVersion");
 
 async function run() {
@@ -72,7 +71,6 @@ async function run() {
     startGroup("Deploying functions");
     const deployment = await deployFunctions(gacFilename, {
       projectId,
-      target,
       firebaseToolsVersion,
     });
     if (deployment.status === "error") {
