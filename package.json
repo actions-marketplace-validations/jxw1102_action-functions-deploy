@@ -28,8 +28,7 @@
     "format:check": "prettier . --list-different",
     "format": "prettier --write .",
     "build": "microbundle --format cjs --target node --no-compress --no-sourcemap src/index.ts",
-    "build:watch": "microbundle watch --format cjs --target node --no-compress --no-sourcemap src/index.ts",
-    "test": "jest"
+    "build:watch": "microbundle watch --format cjs --target node --no-compress --no-sourcemap src/index.ts"
   },
   "husky": {
     "hooks": {

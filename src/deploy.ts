@@ -54,20 +54,6 @@ export type ChannelDeployConfig = DeployConfig & {
 
 export type ProductionDeployConfig = DeployConfig & {};
 
-export function interpretChannelDeployResult(
-  deployResult: ChannelSuccessResult
-): { expireTime: string; urls: string[] } {
-  const allSiteResults = Object.values(deployResult.result);
-
-  const expireTime = allSiteResults[0].expireTime;
-  const urls = allSiteResults.map((siteResult) => siteResult.url);
-
-  return {
-    expireTime,
-    urls,
-  };
-}
-
 async function execWithCredentials(
   args: string[],
   projectId,
@@ -123,40 +109,14 @@ async function execWithCredentials(
     : ""; // output from the CLI
 }
 
-export async function deployPreview(
-  gacFilename: string,
-  deployConfig: ChannelDeployConfig
-) {
-  const { projectId, channelId, target, expires, firebaseToolsVersion } =
-    deployConfig;
-
-  const deploymentText = await execWithCredentials(
-    [
-      "hosting:channel:deploy",
-      channelId,
-      ...(target ? ["--only", target] : []),
-      ...(expires ? ["--expires", expires] : []),
-    ],
-    projectId,
-    gacFilename,
-    { firebaseToolsVersion }
-  );
-
-  const deploymentResult = JSON.parse(deploymentText.trim()) as
-    | ChannelSuccessResult
-    | ErrorResult;
-
-  return deploymentResult;
-}
-
-export async function deployProductionSite(
+export async function deployFunctions(
   gacFilename,
   productionDeployConfig: ProductionDeployConfig
 ) {
   const { projectId, target, firebaseToolsVersion } = productionDeployConfig;
 
   const deploymentText = await execWithCredentials(
-    ["deploy", "--only", `hosting${target ? ":" + target : ""}`],
+    ["deploy", "--only", `functions`],
     projectId,
     gacFilename,
     { firebaseToolsVersion }
